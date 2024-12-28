@@ -1,10 +1,12 @@
 'use client';
 
 import classes from './SideBar.module.css';
+
+import React, { useState } from 'react';
+
 import { MenuItem } from '@/types/menu';
 import { Group, ScrollArea } from '@mantine/core';
 import { IconLogout, IconSwitchHorizontal } from '@tabler/icons-react';
-import React, { useEffect, useState } from 'react';
 import { MenuGroup } from '../MenuGroup';
 
 export function SideBar({ menu }: { menu: MenuItem[] }) {
@@ -13,11 +15,6 @@ export function SideBar({ menu }: { menu: MenuItem[] }) {
 	main: 'Dashboard',
 	sub: ''
   });
-
-  useEffect(() => {
-	console.log(active);
-  }, [active]);
-
 
   const links = menu.map((item: MenuItem, index) => {
 	return (

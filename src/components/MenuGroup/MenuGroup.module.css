@@ -4,28 +4,37 @@
 	text-decoration: none;
 	font-size: var(--mantine-font-size-sm);
 	color: var(--mantine-color-white);
-	padding: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
+	margin: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
 	border-radius: var(--mantine-radius-sm);
-	font-weight: 500;
 	min-width: 15rem;
 	gap: 2px;
 	@mixin hover {
 		background-color: var(--mantine-color-blue-7);
 		color: var(--mantine-color-dark-4);
+		font-weight: 500;
+
 		.linkIcon {
 			color: var(--mantine-color-white);
 	   }
    }
 	&[data-active] {
 		&, &:hover {
+			font-weight: 500;
 			box-shadow: var(--mantine-shadow-sm);
 			background-color: var(--mantine-color-white);
 			color: var(--mantine-color-hinodeBlue-5);
 			.linkIcon {
 				color: var(--mantine-color-hinodeBlue-5);
 		   }
+		   .chevron {
+				color: var(--mantine-color-hinodeBlue-5); /* Cor quando ativo */
+			}
 	   }
    }
+   	&:hover .chevron {
+		font-weight: 500;
+		color: var(--mantine-color-white);
+	}
 }
 .link {
 	position: relative;
@@ -37,18 +46,15 @@
 	padding-left: var(--mantine-spacing-md);
 	margin-left: var(--mantine-spacing-xl);
 	font-size: var(--mantine-font-size-sm);
-	color: var(--mantine-color-white);
-   /* Ajuste para tema claro/escuro */
-	border-left: 1px solid var(--mantine-color-gray-3);
-   /* Personalize conforme o tema */
-	transition: color 0.3s ease;
-   /* Efeito de transição suave */
-}
-.link:hover {
 	color: var(--mantine-color-blue-5);
-   /* Cor no hover */
+	border-left: 1px solid var(--mantine-color-gray-3);
+	transition: color 0.3s ease;
 }
-/* Bolinha do ::before */
+
+.link:hover {
+	color: var(--mantine-color-white);
+}
+
 .link::before {
 	content: '';
 	position: absolute;
@@ -61,16 +67,18 @@
 	border-radius: 50%;
 	transition: background-color 0.5s ease, transform 0.3s ease;
 }
-/* Quando o item está ativo ou o mouse passa sobre ele */
+.link[data-active]{
+	color: var(--mantine-color-white);
+}
+
 .link[data-active]::before, .link:hover::before {
 	background-color: var(--mantine-color-white);
-   /* Cor da bolinha no hover ou ativo */
 	transform: translateY(-50%) scale(1.2);
-   /* Efeito de "crescimento" */
 }
 .chevron {
 	transition: transform 200ms ease;
 }
+
 .linkSingle {
 	display: flex;
 	align-items: center;
@@ -89,19 +97,11 @@
 	   }
    }
 }
+
 .linkIcon{
 	color: var(--mantine-color-blue-1);
 	margin-right: var(--mantine-spacing-sm);
 	width: 25px;
 	height: 25px;
 }
-@keyframes moveDot {
-	0% {
-		top: var(--previous-top, 50%);
-	   /* Começa na posição anterior */
-   }
-	100% {
-		top: 50%;
-	   /* Move para a posição atual */
-   }
-}
+

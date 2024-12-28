@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { IconChevronRight } from '@tabler/icons-react';
-import { Box, Collapse, Group, ScrollArea, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
+import { Collapse, Group, Text, UnstyledButton } from '@mantine/core';
 import classes from './MenuGroup.module.css';
 import { IconName } from '@/types/globalTypes';
 import IconMapper from '../IconMapper';
@@ -20,24 +20,16 @@ interface LinksGroupProps {
 export function MenuGroup({ icon, label, initiallyOpened, links, active, setActive }: LinksGroupProps) {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
-  const [prevPosition, setPrevPosition] = useState('50%'); // Novo estado para a posição anterior
-  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({}); // Referências dos elementos
 
   const items = (hasLinks ? links : []).map((link) => (
     <Text<'a'>
       component="a"
-      ref={(el) => (linkRefs.current[link.label] = el)} // Atribui a referência
       data-active={active.sub === link.label || undefined}
       className={classes.link}
       href={link.link}
       key={link.label}
       onClick={(event) => {
         event.preventDefault();
-        const linkElement = linkRefs.current[link.label];
-        if (linkElement) {
-          const topPosition = linkElement.getBoundingClientRect().top;
-          setPrevPosition(`${topPosition}px`); // Atualiza a posição anterior
-        }
         setActive({ main: label, sub: link.label });
       }}
     >
@@ -45,16 +37,25 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
     </Text>
   ));
 
+  useEffect(() => {
+    if (opened && hasLinks && !active.sub) {
+      setActive({ main: label, sub: links[0].label });
+    }
+  }, [opened, links, active.sub, label, setActive]);
+
+  const handleGroupClick = () => {
+    // Se o grupo estiver fechado, abre e seleciona o primeiro item
+    if (!opened && hasLinks) {
+      setActive({ main: label, sub: links[0].label });
+    }
+    setOpened((prev) => !prev);
+  };
+
+
   return (
     <>
       <UnstyledButton
-        onClick={() => {
-          setOpened((o) => !o);
-          setActive({
-            main: label,
-            sub: '',
-          });
-        }}
+        onClick={handleGroupClick}
         className={classes.control}
         data-active={label === active.main || undefined}
       >
@@ -66,9 +67,10 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
             data-active={label === active.main || undefined}
             onClick={(event) => {
               event.preventDefault();
+              const subActive = hasLinks && opened ? links[0].label : '';
               setActive({
                 main: label,
-                sub: '',
+                sub: subActive,
               });
             }}
           >

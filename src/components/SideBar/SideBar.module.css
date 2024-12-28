@@ -5,23 +5,23 @@
 	display: flex;
 	flex-direction: column;
 	background-color: var(--mantine-color-hinodeBlue-5);
-  }
+}
 
-  .navbarMain {
-	flex-grow: 1; /* Faz com que o conteúdo de links ocupe o espaço restante */
+.navbarMain {
+	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
-	overflow-y: auto; /* Permite rolagem no conteúdo de links */
-  }
+	overflow-y: auto;
+}
 
-  .header {
+.header {
 	padding-bottom: var(--mantine-spacing-md);
 	margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
 	border-bottom: 1px solid var(--mantine-color-blue-7);
-  }
+}
 
-  .footer {
+.footer {
 	padding-top: var(--mantine-spacing-md);
 	margin-top: var(--mantine-spacing-md);
 	border-top: 1px solid var(--mantine-color-blue-7);
-  }
+}
