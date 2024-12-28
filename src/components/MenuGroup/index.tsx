@@ -21,13 +21,12 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
 			setActive({ main: label, sub: link.label });
 		}}
 		>
-		{link.label}
+			{link.label}
 		</Text>
 	));
 
 	useEffect(() => {
 		if (opened && hasLinks && active.main === label && !active.sub) {
-		// Seleciona o primeiro link apenas se o grupo estiver aberto e não houver link ativo
 		setActive({ main: label, sub: links[0].label });
 		}
 	}, [opened, links, active.sub, label, active.main, setActive]);
