@@ -12,8 +12,8 @@ export const metadata = {
   title: 'HinodeHub'
 };
 
-export default function RootLayout({ children }: { children: any }) {
-  return (
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+	return (
     <html lang="pt" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
