@@ -5,7 +5,7 @@ import classes from "./SideBar.module.css";
 import React, { useState } from "react";
 
 import { MenuItem } from "@/types/menu";
-import { Group, rem, ScrollArea, Switch } from "@mantine/core";
+import { Group, Menu, rem, ScrollArea, Switch } from "@mantine/core";
 import { IconLogout, IconSwitchHorizontal } from "@tabler/icons-react";
 import { MenuGroup } from "../MenuGroup";
 
@@ -14,7 +14,6 @@ export function SideBar({ menu }: { menu: MenuItem[] }) {
     main: "Dashboard",
     sub: "",
   });
-
   const [activeMenu, setActiveMenu] = useState(true);
 
   const links = menu.map((item: MenuItem, index) => {
@@ -53,14 +52,14 @@ export function SideBar({ menu }: { menu: MenuItem[] }) {
                 borderColor: "transparent",
                 backgroundColor: activeMenu
                   ? "var(--mantine-color-hinodeBlue-1)"
-                  : "var(--mantine-color-hinodeBlue-8)",
+                  : "var(--mantine-color-hinodeBlue-3)",
               },
               thumb: {
                 height: "90%",
                 width: rem(11),
                 borderRadius: rem(3),
                 borderColor: "transparent",
-                backgroundColor: "var(--mantine-color-hinodeBlue-5)",
+                backgroundColor: "var(--mantine-color-hinodeBlue-6)",
               },
             }}
             h={24}
