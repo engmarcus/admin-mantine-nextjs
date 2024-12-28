@@ -35,16 +35,14 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
   }, [opened, links, active.sub, label, active.main, setActive]);
 
   const handleGroupClick = () => {
-    if (opened) {
-      // Se o grupo estiver aberto, mantém o link sub que estava selecionado
-      setOpened(false);
-    } else {
-      // Se o grupo não estiver aberto, seleciona o primeiro link
-      setOpened(true);
-      if (!active.sub) {
-        setActive({ main: label, sub: links[0].label });
-      }
-    }
+
+
+
+	if(!hasLinks){
+		setActive({ main: label, sub: ''});
+	}else{
+		setOpened(!opened);
+	}
   };
 
   return (
