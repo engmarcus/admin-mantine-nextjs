@@ -2,25 +2,14 @@ import { useState, useEffect } from 'react';
 import { IconChevronRight } from '@tabler/icons-react';
 import { Collapse, Group, Text, UnstyledButton } from '@mantine/core';
 import classes from './MenuGroup.module.css';
-import { IconName } from '@/types/globalTypes';
 import IconMapper from '../IconMapper';
-
-interface LinksGroupProps {
-  icon: IconName;
-  label: string;
-  active: {
-    main: string;
-    sub: string;
-  };
-  initiallyOpened?: boolean;
-  setActive: (state: { main: string; sub: string }) => void;
-  links?: { label: string; link: string }[];
-}
+import { LinksGroupProps } from '@/types/menu';
 
 export function MenuGroup({ icon, label, initiallyOpened, links, active, setActive }: LinksGroupProps) {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
 
+  // Itens de links para renderizar
   const items = (hasLinks ? links : []).map((link) => (
     <Text<'a'>
       component="a"
@@ -37,20 +26,26 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
     </Text>
   ));
 
+  // Efeito para selecionar o primeiro link quando o grupo é aberto e nenhum item estiver selecionado
   useEffect(() => {
-    if (opened && hasLinks && !active.sub) {
+    if (opened && hasLinks && active.main === label && !active.sub) {
+      // Seleciona o primeiro link apenas se o grupo estiver aberto e não houver link ativo
       setActive({ main: label, sub: links[0].label });
     }
-  }, [opened, links, active.sub, label, setActive]);
+  }, [opened, links, active.sub, label, active.main, setActive]);
 
   const handleGroupClick = () => {
-    // Se o grupo estiver fechado, abre e seleciona o primeiro item
-    if (!opened && hasLinks) {
-      setActive({ main: label, sub: links[0].label });
+    if (opened) {
+      // Se o grupo estiver aberto, mantém o link sub que estava selecionado
+      setOpened(false);
+    } else {
+      // Se o grupo não estiver aberto, seleciona o primeiro link
+      setOpened(true);
+      if (!active.sub) {
+        setActive({ main: label, sub: links[0].label });
+      }
     }
-    setOpened((prev) => !prev);
   };
-
 
   return (
     <>

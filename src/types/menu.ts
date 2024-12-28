@@ -13,4 +13,16 @@ export type MenuLink = {
 	permissions?: string[];
 };
 
+export interface LinksGroupProps {
+  icon: IconName;
+  label: string;
+  active: {
+	main: string;
+	sub: string;
+  };
+  initiallyOpened?: boolean;
+  setActive: (state: { main: string; sub: string }) => void;
+  links?: { label: string; link: string }[];
+}
+
 export type SidebarState =  'mini' | 'full';
