@@ -5,56 +5,55 @@ import classes from "./SideBar.module.css";
 import React, { useState } from "react";
 
 import { MenuItem, MenuStructure } from "@/types/menu";
-import { Box, Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
+import { Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
 import { IconLogout, IconSwitchHorizontal } from "@tabler/icons-react";
 import { MenuGroup } from "../MenuGroup";
 import { Logo } from "../NavBar/Logo";
+import { useDisclosure } from "@mantine/hooks";
 
 export function SideBar({ menu }: { menu: MenuStructure }) {
   const [active, setActive] = useState({
     main: "Dashboard",
     sub: "",
   });
-  const [activeMenu, setActiveMenu] = useState(true);
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const groups = menu.map((group) => {
-	return (
-		<div key={group.group} className={classes.groupMenu}>
-			<Divider
-				my="xs"
-				color='var(--mantine-color-blue-7)'
-				labelPosition="center"
-				label={
-					<h3 className={classes.groupTitle}>{group.group}</h3>
-				}
-			/>
-			{group.items.map((item: MenuItem, index: number) => (
-				<MenuGroup
-					key={index}
-					label={item.label}
-					links={item.links}
-					icon={item.icon}
-					active={active}
-					setActive={setActive}
-				/>
-			))}
-		</div>
-
-	);
-
+    return (
+      <div key={group.group} className={classes.groupMenu}>
+        <Divider
+          my="xs"
+          color='var(--mantine-color-blue-7)'
+          labelPosition="center"
+          label={
+            <h3 className={classes.groupTitle}>{group.group}</h3>
+          }
+        />
+        {group.items.map((item: MenuItem, index: number) => (
+          <MenuGroup
+            key={index}
+            label={item.label}
+            links={item.links}
+            icon={item.icon}
+            active={active}
+            setActive={setActive}
+          />
+        ))}
+      </div>
+    );
   });
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
-			<div style={{flex: 1, justifyContent: 'center', alignItems:'center', display: 'flex'}}>
-				<Logo style={{ width: 120 }} name={true}/>
 
-			</div>
+  return (
+    <nav className={classes.sideBarContainer}>
+      <div className={classes.sideBarInner}>
+        <Group className={classes.header} justify="space-between">
+          <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+            <Logo style={{ width: 120 }} />
+          </div>
 
           <Switch
-            checked={activeMenu}
-            onChange={() => setActiveMenu(!activeMenu)}
+            checked={desktopOpened}
+            onChange={() => { toggleDesktop() }}
             styles={{
               root: {
                 height: "100%",
@@ -68,7 +67,7 @@ export function SideBar({ menu }: { menu: MenuStructure }) {
                 minWidth: rem(30),
                 width: rem(38),
                 borderColor: "transparent",
-                backgroundColor: activeMenu
+                backgroundColor: desktopOpened
                   ? "var(--mantine-color-hinodeBlue-1)"
                   : "var(--mantine-color-hinodeBlue-3)",
               },
@@ -84,27 +83,32 @@ export function SideBar({ menu }: { menu: MenuStructure }) {
             radius="sm"
           />
         </Group>
-        <ScrollArea type="never" scrollbars='y'>{groups}</ScrollArea>
-      </div>
 
-      <div className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
+        <ScrollArea  type="never" scrollbars="y" className={classes.scrollbarsNav}>
+          {groups}
+        </ScrollArea>
 
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
+        <Group className={classes.footer}>
+
+
+          <a
+            href="#"
+            className={classes.link}
+            onClick={(event) => event.preventDefault()}
+          >
+            <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
+            <span>Change account</span>
+          </a>
+
+          <a
+            href="#"
+            className={classes.link}
+            onClick={(event) => event.preventDefault()}
+          >
+            <IconLogout className={classes.linkIcon} stroke={1.5} />
+            <span>Logout</span>
+          </a>
+        </Group>
       </div>
     </nav>
   );

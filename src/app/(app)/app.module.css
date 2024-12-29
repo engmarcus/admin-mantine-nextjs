@@ -1,0 +1,6 @@
+.navbar {
+	padding: var(--mantine-spacing-md);
+	display: flex;
+	flex-direction: column;
+	background-color: var(--mantine-color-hinodeBlue-5);
+}
