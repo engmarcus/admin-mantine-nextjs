@@ -1,6 +1,5 @@
 
 
-import { SideBar } from "@/components/SideBar";
 import Structure from "./structure";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -10,7 +9,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 	return (
 		<Structure
 			headerContent={<>teste</>}
-			sidebarContent={<SideBar menu={menu}/>}
+			menu={menu}
 		>
 			{ children}
 		</Structure>

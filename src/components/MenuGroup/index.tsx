@@ -5,7 +5,7 @@ import classes from './MenuGroup.module.css';
 import IconMapper from '../IconMapper';
 import { MenuGroupProps } from './interfaceMenu';
 
-export function MenuGroup({ icon, label, initiallyOpened, links, active, setActive }: MenuGroupProps) {
+export function MenuGroup({ icon, label, initiallyOpened, links, active, open, setActive }: MenuGroupProps) {
 	const hasLinks = Array.isArray(links);
 	const [opened, setOpened] = useState(initiallyOpened || false);
 
@@ -45,6 +45,8 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
 			onClick={handleGroupClick}
 			className={classes.control}
 			data-active={label === active.main || undefined}
+			data-open={open === false || undefined}
+
 		>
 			<Group justify="space-between" gap={0}>
 				<a
@@ -52,6 +54,7 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
 					href="#"
 					key={label}
 					data-active={label === active.main || undefined}
+					data-open={open === false || undefined}
 					onClick={(event) => {
 					event.preventDefault();
 					const subActive = hasLinks && opened ? links[0].label : '';
@@ -62,9 +65,9 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, setActi
 					}}
 				>
 					<IconMapper iconName={icon} className={classes.linkIcon} stroke={1.5} />
-					<span>{label}</span>
+					<span>{open &&label}</span>
 				</a>
-			{hasLinks && (
+			{hasLinks && open && (
 				<IconChevronRight
 				className={classes.chevron}
 				stroke={1.5}

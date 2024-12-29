@@ -9,25 +9,30 @@ import { Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
 import { IconLogout, IconSwitchHorizontal } from "@tabler/icons-react";
 import { MenuGroup } from "../MenuGroup";
 import { Logo } from "../NavBar/Logo";
-import { useDisclosure } from "@mantine/hooks";
 
-export function SideBar({ menu }: { menu: MenuStructure }) {
+interface propSideBar {
+	menu: MenuStructure;
+	toggle: () => void;
+	stateOpen: boolean
+}
+
+
+export function SideBar({ menu, toggle, stateOpen }: propSideBar) {
   const [active, setActive] = useState({
     main: "Dashboard",
     sub: "",
   });
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const groups = menu.map((group) => {
     return (
       <div key={group.group} className={classes.groupMenu}>
         <Divider
-          my="xs"
-          color='var(--mantine-color-blue-7)'
-          labelPosition="center"
-          label={
-            <h3 className={classes.groupTitle}>{group.group}</h3>
-          }
+			my="xs"
+			color='var(--mantine-color-blue-7)'
+			labelPosition={stateOpen ? 'center' : 'left'}
+			label={
+				<h3 className={classes.groupTitle}>{group.group}</h3>
+			}
         />
         {group.items.map((item: MenuItem, index: number) => (
           <MenuGroup
@@ -37,6 +42,7 @@ export function SideBar({ menu }: { menu: MenuStructure }) {
             icon={item.icon}
             active={active}
             setActive={setActive}
+			open={stateOpen}
           />
         ))}
       </div>
@@ -52,8 +58,8 @@ export function SideBar({ menu }: { menu: MenuStructure }) {
           </div>
 
           <Switch
-            checked={desktopOpened}
-            onChange={() => { toggleDesktop() }}
+            checked={stateOpen}
+            onChange={  toggle }
             styles={{
               root: {
                 height: "100%",
@@ -67,7 +73,7 @@ export function SideBar({ menu }: { menu: MenuStructure }) {
                 minWidth: rem(30),
                 width: rem(38),
                 borderColor: "transparent",
-                backgroundColor: desktopOpened
+                backgroundColor: stateOpen
                   ? "var(--mantine-color-hinodeBlue-1)"
                   : "var(--mantine-color-hinodeBlue-3)",
               },

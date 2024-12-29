@@ -15,5 +15,6 @@ export interface MenuGroupProps {
 	  main: string;
 	  sub: string;
 	};
+	open: boolean;
 	setActive: Dispatch<SetStateAction<{ main: string; sub: string }>>;
 }
