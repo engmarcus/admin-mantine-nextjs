@@ -4,36 +4,54 @@ import classes from "./SideBar.module.css";
 
 import React, { useState } from "react";
 
-import { MenuItem } from "@/types/menu";
-import { Group, Menu, rem, ScrollArea, Switch } from "@mantine/core";
+import { MenuItem, MenuStructure } from "@/types/menu";
+import { Box, Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
 import { IconLogout, IconSwitchHorizontal } from "@tabler/icons-react";
 import { MenuGroup } from "../MenuGroup";
+import { Logo } from "../NavBar/Logo";
 
-export function SideBar({ menu }: { menu: MenuItem[] }) {
+export function SideBar({ menu }: { menu: MenuStructure }) {
   const [active, setActive] = useState({
     main: "Dashboard",
     sub: "",
   });
   const [activeMenu, setActiveMenu] = useState(true);
 
-  const links = menu.map((item: MenuItem, index) => {
-    return (
-      <MenuGroup
-        key={index}
-        label={item.label}
-        links={item.links}
-        icon={item.icon}
-        active={active}
-        setActive={setActive}
-      />
-    );
-  });
+  const groups = menu.map((group) => {
+	return (
+		<div key={group.group} className={classes.groupMenu}>
+			<Divider
+				my="xs"
+				color='var(--mantine-color-blue-7)'
+				labelPosition="center"
+				label={
+					<h3 className={classes.groupTitle}>{group.group}</h3>
+				}
+			/>
+			{group.items.map((item: MenuItem, index: number) => (
+				<MenuGroup
+					key={index}
+					label={item.label}
+					links={item.links}
+					icon={item.icon}
+					active={active}
+					setActive={setActive}
+				/>
+			))}
+		</div>
 
+	);
+
+  });
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <Group className={classes.header} justify="space-between">
-          LOGO
+			<div style={{flex: 1, justifyContent: 'center', alignItems:'center', display: 'flex'}}>
+				<Logo style={{ width: 120 }} name={true}/>
+
+			</div>
+
           <Switch
             checked={activeMenu}
             onChange={() => setActiveMenu(!activeMenu)}
@@ -66,7 +84,7 @@ export function SideBar({ menu }: { menu: MenuItem[] }) {
             radius="sm"
           />
         </Group>
-        <ScrollArea.Autosize type="never">{links}</ScrollArea.Autosize>
+        <ScrollArea type="never" scrollbars='y'>{groups}</ScrollArea>
       </div>
 
       <div className={classes.footer}>

@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { IconChevronRight } from '@tabler/icons-react';
 import { Collapse, Group, Text, UnstyledButton } from '@mantine/core';
 import classes from './MenuGroup.module.css';
 import IconMapper from '../IconMapper';
-import { LinksGroupProps } from '@/types/menu';
+import { MenuGroupProps } from './interfaceMenu';
 
-export function MenuGroup({ icon, label, initiallyOpened, links, active, setActive }: LinksGroupProps) {
+export function MenuGroup({ icon, label, initiallyOpened, links, active, setActive }: MenuGroupProps) {
 	const hasLinks = Array.isArray(links);
 	const [opened, setOpened] = useState(initiallyOpened || false);
 
 	const items = (hasLinks ? links : []).map((link) => (
 		<Text<'a'>
-		component="a"
-		data-active={active.sub === link.label || undefined}
-		className={classes.link}
-		href={link.link}
-		key={link.label}
-		onClick={(event) => {
-			event.preventDefault();
-			setActive({ main: label, sub: link.label });
-		}}
+			component="a"
+			data-active={active.sub === link.label || undefined}
+			className={classes.link}
+			href={link.link}
+			key={link.label}
+			onClick={(event) => {
+				event.preventDefault();
+				setActive({ main: label, sub: link.label });
+			}}
 		>
 			{link.label}
 		</Text>
