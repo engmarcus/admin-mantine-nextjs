@@ -6,7 +6,7 @@ import { IconLogout } from "@tabler/icons-react";
 import classes from "./SideBar.module.css";
 import { MenuItem, MenuStructure } from "@/types/menu";
 import { MenuGroup } from "../MenuGroup";
-import { Logo } from "../NavBar/Logo";
+import { Logo } from "../Logo";
 
 interface DesktopState {
   clickOpen: boolean;
