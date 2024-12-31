@@ -7,12 +7,10 @@
 	margin: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
 	border-radius: var(--mantine-radius-sm);
 	min-width: 15rem;
-
 	@mixin hover {
 		background-color: var(--mantine-color-blue-7);
 		color: var(--mantine-color-dark-4);
 		font-weight: 500;
-
 		.linkIcon {
 			color: var(--mantine-color-white);
 	   }
@@ -26,19 +24,18 @@
 			.linkIcon {
 				color: var(--mantine-color-hinodeBlue-5);
 		   }
-		   .chevron {
-				color: var(--mantine-color-hinodeBlue-5); /* Cor quando ativo */
-			}
+			.chevron {
+				color: var(--mantine-color-hinodeBlue-5);
+		   }
 	   }
    }
-   	&:hover .chevron {
+	&:hover .chevron {
 		font-weight: 500;
 		color: var(--mantine-color-white);
-	}
+   }
 	&[data-open] {
 		margin: 0;
 		min-width: 0;
-
    }
 }
 .link {
@@ -55,11 +52,9 @@
 	border-left: 1px solid var(--mantine-color-gray-3);
 	transition: color 0.3s ease;
 }
-
 .link:hover {
 	color: var(--mantine-color-white);
 }
-
 .link::before {
 	content: '';
 	position: absolute;
@@ -72,11 +67,9 @@
 	border-radius: 50%;
 	transition: background-color 0.5s ease, transform 0.3s ease;
 }
-
 .link[data-active]{
 	color: var(--mantine-color-white);
 }
-
 .link[data-active]::before, .link:hover::before {
 	background-color: var(--mantine-color-white);
 	transform: translateY(-50%) scale(1.2);
@@ -84,7 +77,6 @@
 .chevron {
 	transition: transform 200ms ease;
 }
-
 .linkSingle {
 	display: flex;
 	align-items: center;
@@ -101,16 +93,14 @@
 				color: var(--mantine-color-hinodeBlue-5);
 		   }
 	   }
-   }&[data-open] {
+   }
+   &[data-open] {
 		margin-left: 10%;
    }
-
 }
-
 .linkIcon{
 	color: var(--mantine-color-blue-1);
 	margin-right: var(--mantine-spacing-sm);
 	width: 25px;
 	height: 25px;
 }
-

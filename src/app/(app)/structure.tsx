@@ -3,10 +3,8 @@
 import { MenuStructure } from '@/types/menu';
 import classes from './app.module.css';
 import { AppShell, Group } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { ReactNode, useState } from 'react';
 import { SideBar } from '@/components/SideBar';
-
 interface StructureProps {
   children: ReactNode;
   headerContent?: ReactNode;
@@ -16,7 +14,7 @@ interface StructureProps {
 interface DesktopState {
 	clickOpen: boolean;
 	isOpen: boolean;
-  }
+}
 export default function Structure({ children, headerContent, menu }: StructureProps) {
 	const [desktopOpened, toggleDesktop ] = useState<DesktopState>({
 		clickOpen: true,
