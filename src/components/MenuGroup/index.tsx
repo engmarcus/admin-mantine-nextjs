@@ -21,7 +21,7 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, open, s
 				setActive({ main: label, sub: link.label });
 			}}
 		>
-			{link.label}
+			{open.isOpen ? link.label : ''}
 		</Text>
 	));
 
@@ -30,6 +30,9 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, open, s
 		setActive({ main: label, sub: links[0].label });
 		}
 	}, [opened, links, active.sub, label, active.main, setActive]);
+
+
+
 
 	const handleGroupClick = () => {
 		if(!hasLinks){
@@ -45,8 +48,7 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, open, s
 			onClick={handleGroupClick}
 			className={classes.control}
 			data-active={label === active.main || undefined}
-			data-open={open === false || undefined}
-
+			data-open={open.isOpen === false || undefined}
 		>
 			<Group justify="space-between" gap={0}>
 				<a
@@ -54,7 +56,7 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, open, s
 					href="#"
 					key={label}
 					data-active={label === active.main || undefined}
-					data-open={open === false || undefined}
+					data-open={open.isOpen === false || undefined}
 					onClick={(event) => {
 					event.preventDefault();
 					const subActive = hasLinks && opened ? links[0].label : '';
@@ -65,9 +67,9 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, open, s
 					}}
 				>
 					<IconMapper iconName={icon} className={classes.linkIcon} stroke={1.5} />
-					<span>{open &&label}</span>
+					<span>{open.isOpen && label}</span>
 				</a>
-			{hasLinks && open && (
+			{hasLinks && open.isOpen && (
 				<IconChevronRight
 				className={classes.chevron}
 				stroke={1.5}
@@ -77,7 +79,7 @@ export function MenuGroup({ icon, label, initiallyOpened, links, active, open, s
 			)}
 			</Group>
 		</UnstyledButton>
-		{hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+		{hasLinks ? <Collapse in={opened && open.isOpen }>{items}</Collapse> : null}
 		</>
 	);
 	}

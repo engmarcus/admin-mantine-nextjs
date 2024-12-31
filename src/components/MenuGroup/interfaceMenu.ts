@@ -15,6 +15,9 @@ export interface MenuGroupProps {
 	  main: string;
 	  sub: string;
 	};
-	open: boolean;
+	open: {
+		clickOpen: boolean;
+		isOpen: boolean;
+	  };
 	setActive: Dispatch<SetStateAction<{ main: string; sub: string }>>;
 }

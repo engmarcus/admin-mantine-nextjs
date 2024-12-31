@@ -2,7 +2,7 @@
 
 import classes from "./SideBar.module.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { MenuItem, MenuStructure } from "@/types/menu";
 import { Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
@@ -10,18 +10,33 @@ import { IconLogout, IconSwitchHorizontal } from "@tabler/icons-react";
 import { MenuGroup } from "../MenuGroup";
 import { Logo } from "../NavBar/Logo";
 
+
+interface DesktopState {
+	clickOpen: boolean;
+	isOpen: boolean;
+  }
 interface propSideBar {
 	menu: MenuStructure;
-	toggle: () => void;
-	stateOpen: boolean
+	toggle:  React.Dispatch<React.SetStateAction<DesktopState>>;
+	stateOpen: DesktopState
 }
 
 
 export function SideBar({ menu, toggle, stateOpen }: propSideBar) {
-  const [active, setActive] = useState({
-    main: "Dashboard",
-    sub: "",
-  });
+	const [active, setActive] = useState({
+		main: "Dashboard",
+		sub: "",
+	});
+
+
+	function handleOpenMenu(){
+		toggle({
+			clickOpen: !stateOpen.clickOpen,
+			isOpen: stateOpen.isOpen ? true : !stateOpen.isOpen
+		})
+	}
+
+
 
   const groups = menu.map((group) => {
     return (
@@ -29,7 +44,7 @@ export function SideBar({ menu, toggle, stateOpen }: propSideBar) {
         <Divider
 			my="xs"
 			color='var(--mantine-color-blue-7)'
-			labelPosition={stateOpen ? 'center' : 'left'}
+			labelPosition={stateOpen.isOpen ? 'center' : 'left'}
 			label={
 				<h3 className={classes.groupTitle}>{group.group}</h3>
 			}
@@ -50,72 +65,102 @@ export function SideBar({ menu, toggle, stateOpen }: propSideBar) {
   });
 
   return (
-    <nav className={classes.sideBarContainer}>
-      <div className={classes.sideBarInner}>
-        <Group className={classes.header} justify="space-between">
-          <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
-            <Logo style={{ width: 120 }} />
-          </div>
+		<nav
+		className={classes.sideBarContainer}
+			onMouseLeave={() => {
+				if (!stateOpen.clickOpen && stateOpen.isOpen) {
+				toggle((prev) => ({
+					...prev,
+					isOpen: false, // Fecha o menu
+				}));
+				}
+			}}
+			onMouseEnter={() => {
+				if (!stateOpen.clickOpen && !stateOpen.isOpen) {
+				toggle((prev) => ({
+					...prev,
+					isOpen: true, // Abre o menu
+				}));
+				}
+			}}
+		>
+			<div className={classes.sideBarInner}>
+				<Group className={classes.header} justify="space-between">
+				<div
+					style={{
+						flex: 1,
+						justifyContent: "center",
+						alignItems: "center",
+						display: "flex",
+					}}
+				>
+					<Logo style={{ width: 120 }} open={stateOpen.isOpen} />
+				</div>
 
-          <Switch
-            checked={stateOpen}
-            onChange={  toggle }
-            styles={{
-              root: {
-                height: "100%",
-              },
-              body: {
-                height: "100%",
-              },
-              track: {
-                cursor: "pointer",
-                height: "100%",
-                minWidth: rem(30),
-                width: rem(38),
-                borderColor: "transparent",
-                backgroundColor: stateOpen
-                  ? "var(--mantine-color-hinodeBlue-1)"
-                  : "var(--mantine-color-hinodeBlue-3)",
-              },
-              thumb: {
-                height: "90%",
-                width: rem(11),
-                borderRadius: rem(3),
-                borderColor: "transparent",
-                backgroundColor: "var(--mantine-color-hinodeBlue-6)",
-              },
-            }}
-            h={24}
-            radius="sm"
-          />
-        </Group>
+				<Switch
+					checked={stateOpen.clickOpen}
+					onChange={() => {
+						toggle((prev) => ({
+							...prev,
+							clickOpen: !prev.clickOpen,
+							isOpen: !prev.clickOpen,
+						}));
+					}}
+					styles={{
+					root: {
+						height: "100%",
+					},
+					body: {
+						height: "100%",
+					},
+					track: {
+						cursor: "pointer",
+						height: "100%",
+						minWidth: rem(30),
+						width: rem(38),
+						borderColor: "transparent",
+						backgroundColor: stateOpen.isOpen && stateOpen.clickOpen
+						? "var(--mantine-color-hinodeBlue-1)"
+						: "var(--mantine-color-hinodeBlue-3)",
+					},
+					thumb: {
+						height: "90%",
+						width: rem(11),
+						borderRadius: rem(3),
+						borderColor: "transparent",
+						backgroundColor: "var(--mantine-color-hinodeBlue-6)",
+					},
+					}}
+					h={24}
+					radius="sm"
+				/>
+				</Group>
 
-        <ScrollArea  type="never" scrollbars="y" className={classes.scrollbarsNav}>
-          {groups}
-        </ScrollArea>
+				<ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
+				{groups}
+				</ScrollArea>
 
-        <Group className={classes.footer}>
+				<Group className={classes.footer}>
+				<a
+					href="#"
+					className={classes.link}
+					onClick={(event) => event.preventDefault()}
+				>
+					<IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
+					<span>Change account</span>
+				</a>
 
+				<a
+					href="#"
+					className={classes.link}
+					onClick={(event) => event.preventDefault()}
+				>
+					<IconLogout className={classes.linkIcon} stroke={1.5} />
+					<span>Logout</span>
+				</a>
+				</Group>
+			</div>
+		</nav>
 
-          <a
-            href="#"
-            className={classes.link}
-            onClick={(event) => event.preventDefault()}
-          >
-            <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-            <span>Change account</span>
-          </a>
-
-          <a
-            href="#"
-            className={classes.link}
-            onClick={(event) => event.preventDefault()}
-          >
-            <IconLogout className={classes.linkIcon} stroke={1.5} />
-            <span>Logout</span>
-          </a>
-        </Group>
-      </div>
-    </nav>
   );
 }

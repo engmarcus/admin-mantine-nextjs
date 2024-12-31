@@ -4,7 +4,7 @@ import { MenuStructure } from '@/types/menu';
 import classes from './app.module.css';
 import { AppShell, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { SideBar } from '@/components/SideBar';
 
 interface StructureProps {
@@ -13,16 +13,21 @@ interface StructureProps {
   sidebarContent?: ReactNode;
   menu:  MenuStructure
 }
-
+interface DesktopState {
+	clickOpen: boolean;
+	isOpen: boolean;
+  }
 export default function Structure({ children, headerContent, menu }: StructureProps) {
-	const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-
+	const [desktopOpened, toggleDesktop ] = useState<DesktopState>({
+		clickOpen: true,
+		isOpen: true
+	});
 	return (
 		<AppShell
 			header={{ height: 60 }}
 			layout="alt"
 			navbar={{
-				width: desktopOpened ? 300 : 91,
+				width: desktopOpened.isOpen ? 300 : 91,
 				breakpoint: 'xs',
 				collapsed: { mobile: false, desktop: false },
 			}}

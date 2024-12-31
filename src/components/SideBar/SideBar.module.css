@@ -20,6 +20,8 @@
 
 	color: light-dark(var(--mantine-color-white), var(--mantine-color-black) );
 	border-bottom: 1px solid var(--mantine-color-hinodeBlue-3);
+	justify-content: center;
+
 
   }
 
