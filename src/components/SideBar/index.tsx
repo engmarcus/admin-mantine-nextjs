@@ -86,7 +86,7 @@ export default function SideBar({ menus }: SideBarProps) {
 			</Group>
 
 			<ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
-			{renderGroups()}
+				{renderGroups()}
 			</ScrollArea>
 
 			<Group className={classes.footer}>
