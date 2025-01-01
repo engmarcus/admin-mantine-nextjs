@@ -19,7 +19,7 @@ export default function LayoutClient ({children, menus} : LayoutClientInterface)
 
 	return (
 		<AppShell
-			header={{ height: 60 }}
+			header={{ height: 66 }}
 			layout="alt"
 			navbar={{
 				width: isOpen ? 300 : 90,
