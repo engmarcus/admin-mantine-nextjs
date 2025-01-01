@@ -5,6 +5,11 @@ export type MenuLink = {
   link: string;
 };
 
+export interface SidebarState {
+	clickOpen: boolean;
+	isOpen: boolean;
+}
+
 export interface LinkItem {
   label: string;
   link: string;
@@ -14,7 +19,7 @@ export type MenuItem = {
   label: string;
   icon: IconName;
   initiallyOpened?: boolean;
-  links?: LinkItem[];
+  links: LinkItem[] | string;
   permissions?: string[];
 };
 
@@ -25,4 +30,3 @@ export interface MenuGroup {
 
 export type MenuStructure = MenuGroup[];
 
-export type SidebarState = "mini" | "full";

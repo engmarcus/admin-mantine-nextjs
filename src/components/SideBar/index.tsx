@@ -1,103 +1,71 @@
 "use client";
 
+import classes from "./SideBar.module.css";
 import React, { useState } from "react";
 import { Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
-import classes from "./SideBar.module.css";
-import { MenuItem, MenuStructure } from "@/types/menu";
+import { MenuItem } from "@/types/menu";
 import { MenuGroup } from "../MenuGroup";
 import { Logo } from "../Logo";
+import useSidebarStore from "@/store/sidebarStore";
+import { SideBarProps } from "./interface";
 
-interface DesktopState {
-  clickOpen: boolean;
-  isOpen: boolean;
-}
+export default function SideBar({ menus }: SideBarProps) {
+  const clickOpen = useSidebarStore((store) => store.clickOpen);
+  const isOpen = useSidebarStore((store) => store.isOpen);
+  const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
 
-interface SideBarProps {
-  menu: MenuStructure;
-  toggle: React.Dispatch<React.SetStateAction<DesktopState>>;
-  stateOpen: DesktopState;
-}
-
-export const SideBar: React.FC<SideBarProps> = ({
-  menu,
-  toggle,
-  stateOpen,
-}) => {
   const [active, setActive] = useState({ main: "Dashboard", sub: "" });
 
-  const handleToggleMenu = () => {
-    toggle((prev) => ({
-      clickOpen: !prev.clickOpen,
-      isOpen: !prev.clickOpen,
-    }));
-  };
+  const renderGroups = () => {
+	/** fazer filtro de permissao */
+	/** fazer filtro de menu ativo */
+    return menus.map((group) => {
+		/**  */
 
-  const handleMouseEnter = () => {
-    if (!stateOpen.clickOpen && !stateOpen.isOpen) {
-      toggle((prev) => ({ ...prev, isOpen: true }));
-    }
+		return (
+			<div key={group.group} className={classes.groupMenu}>
+			<Divider
+				my="xs"
+				color="var(--mantine-color-blue-7)"
+				labelPosition={isOpen ? "center" : "left"}
+				label={<h3 className={classes.groupTitle}>{group.group}</h3>}
+			/>
+			{group.items.map((item: MenuItem) => {
+				return(
+					<MenuGroup
+						key={item.label}
+						label={item.label}
+						links={item.links}
+						icon={item.icon}
+						active={active}
+						setActive={setActive}
+					/>
+				)}
+			)}
+			</div>
+      	);
+    });
   };
-
-  const handleMouseLeave = () => {
-    if (!stateOpen.clickOpen && stateOpen.isOpen) {
-      toggle((prev) => ({ ...prev, isOpen: false }));
-    }
-  };
-
-  const renderGroups = () =>
-    menu.map((group) => (
-      <div key={group.group} className={classes.groupMenu}>
-        <Divider
-          my="xs"
-          color="var(--mantine-color-blue-7)"
-          labelPosition={stateOpen.isOpen ? "center" : "left"}
-          label={<h3 className={classes.groupTitle}>{group.group}</h3>}
-        />
-        {group.items.map((item: MenuItem) => (
-          <MenuGroup
-            key={item.label}
-            label={item.label}
-            links={item.links}
-            icon={item.icon}
-            active={active}
-            setActive={setActive}
-            open={stateOpen}
-          />
-        ))}
-      </div>
-    ));
 
   return (
-    <nav
-      className={classes.sideBarContainer}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <nav className={classes.sideBarContainer}>
       <div className={classes.sideBarInner}>
-        <Group
-          className={classes.header}
-          data-active={!stateOpen.isOpen || undefined}
-          justify="space-between"
-        >
+        <Group className={classes.header} data-active={!isOpen || undefined} justify="space-between">
           <div className={classes.logoWrapper}>
-            <Logo style={{ width: 120 }} open={stateOpen.isOpen} />
+            <Logo style={{ width: 120 }} open={isOpen} />
           </div>
 
           <Switch
-            checked={stateOpen.clickOpen}
-            onChange={handleToggleMenu}
-            styles={switchStyles(stateOpen)}
+            checked={clickOpen}
+            onChange={toggleSidebar}
+            styles={switchStyles({ isOpen, clickOpen })}
             h={24}
             radius="sm"
           />
         </Group>
 
-        <ScrollArea
-          type="never"
-          scrollbars="y"
-          className={classes.scrollbarsNav}
-        >
+        <ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
           {renderGroups()}
         </ScrollArea>
 
@@ -106,32 +74,24 @@ export const SideBar: React.FC<SideBarProps> = ({
             href="#"
             icon={<IconLogout className={classes.linkIcon} stroke={1.5} />}
             label="Logout"
-            isOpen={stateOpen.isOpen}
+            isOpen={isOpen}
           />
         </Group>
       </div>
     </nav>
   );
-};
+}
 
-const FooterLink: React.FC<{
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  isOpen: boolean;
-}> = ({ href, icon, label, isOpen }) => (
-  <a
-    href={href}
-    className={classes.link}
-    data-active={!isOpen || undefined}
-    onClick={(e) => e.preventDefault()}
-  >
-    {icon}
-    <span>{isOpen ? label : ""}</span>
-  </a>
-);
+function FooterLink({ href, icon, label, isOpen }: { href: string; icon: React.ReactNode; label: string; isOpen: boolean }) {
+  return (
+    <a href={href} className={classes.link} data-active={!isOpen || undefined} onClick={(e) => e.preventDefault()}>
+      {icon}
+      <span>{isOpen ? label : ""}</span>
+    </a>
+  );
+}
 
-const switchStyles = (stateOpen: DesktopState) => ({
+const switchStyles = ({ isOpen, clickOpen }: { isOpen: boolean; clickOpen: boolean }) => ({
   root: {
     height: "100%",
   },
@@ -144,10 +104,9 @@ const switchStyles = (stateOpen: DesktopState) => ({
     minWidth: rem(30),
     width: rem(38),
     borderColor: "transparent",
-    backgroundColor:
-      stateOpen.isOpen && stateOpen.clickOpen
-        ? "var(--mantine-color-hinodeBlue-1)"
-        : "var(--mantine-color-hinodeBlue-3)",
+    backgroundColor: isOpen && clickOpen
+      ? "var(--mantine-color-hinodeBlue-1)"
+      : "var(--mantine-color-hinodeBlue-3)",
   },
   thumb: {
     height: "90%",

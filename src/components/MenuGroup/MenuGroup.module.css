@@ -4,9 +4,9 @@
 	text-decoration: none;
 	font-size: var(--mantine-font-size-sm);
 	color: var(--mantine-color-white);
-	margin: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
+	margin: 5px;
 	border-radius: var(--mantine-radius-sm);
-	min-width: 15rem;
+	min-width: 12rem;
 	@mixin hover {
 		background-color: var(--mantine-color-blue-7);
 		color: var(--mantine-color-dark-4);
@@ -38,6 +38,7 @@
 		min-width: 0;
    }
 }
+
 .link {
 	position: relative;
    /* Necessário para posicionamento do ::before */
@@ -52,9 +53,11 @@
 	border-left: 1px solid var(--mantine-color-gray-3);
 	transition: color 0.3s ease;
 }
+
 .link:hover {
 	color: var(--mantine-color-white);
 }
+
 .link::before {
 	content: '';
 	position: absolute;
@@ -67,16 +70,20 @@
 	border-radius: 50%;
 	transition: background-color 0.5s ease, transform 0.3s ease;
 }
+
 .link[data-active]{
 	color: var(--mantine-color-white);
 }
+
 .link[data-active]::before, .link:hover::before {
 	background-color: var(--mantine-color-white);
 	transform: translateY(-50%) scale(1.2);
 }
+
 .chevron {
 	transition: transform 200ms ease;
 }
+
 .linkSingle {
 	display: flex;
 	align-items: center;

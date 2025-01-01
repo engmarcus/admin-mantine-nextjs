@@ -10,14 +10,10 @@ export interface MenuGroupProps {
 	icon: IconName;
 	label: string;
 	initiallyOpened?: boolean;
-	links?: LinkItem[];
+	links: LinkItem[] | string;
 	active: {
 	  main: string;
 	  sub: string;
-	};
-	open: {
-		clickOpen: boolean;
-		isOpen: boolean;
-	  };
+	}
 	setActive: Dispatch<SetStateAction<{ main: string; sub: string }>>;
 }

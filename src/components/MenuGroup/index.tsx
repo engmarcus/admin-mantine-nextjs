@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
 import { Collapse, Group, Text, UnstyledButton } from "@mantine/core";
 import classes from "./MenuGroup.module.css";
 import IconMapper from "../IconMapper";
 import { MenuGroupProps } from "./interfaceMenu";
+import useSidebarStore from "@/store/sidebarStore";
+import Link from "next/link";
 
 export function MenuGroup({
   icon,
@@ -11,37 +13,38 @@ export function MenuGroup({
   initiallyOpened,
   links,
   active,
-  open,
   setActive,
 }: MenuGroupProps) {
-  const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
-
+  	const hasLinks = Array.isArray(links);
+  	const [opened, setOpened] = useState(initiallyOpened || false);
+	const isOpen = useSidebarStore(store => store.isOpen);
   // Itens de menu
-  const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
-      data-active={active.sub === link.label || undefined}
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive({ main: label, sub: link.label });
-      }}
-    >
-      {open.isOpen ? link.label : ""}
-    </Text>
-  ));
+  const items = useMemo(() => {
+	return (hasLinks ? links : []).map((link) => {
+	  return (
+		<Link
+		  href={link.link}
+		  key={link.label}
+		  data-active={active.sub === link.label || undefined}
+		  className={classes.link}
+		  passHref
+		  onClick={() => {
+			setActive({ main: label, sub: link.label });
+		  }}
 
-  // Configuração para definir o item ativo na primeira abertura
+		>
+			{isOpen ? link.label : ""}
+		</Link>
+	  );
+	});
+  }, [hasLinks, links, active.sub, label, isOpen, setActive]);
+
   useEffect(() => {
     if (opened && hasLinks && active.main === label && !active.sub) {
       setActive({ main: label, sub: links[0].label });
     }
   }, [opened, links, active.sub, label, active.main, setActive]);
 
-  // Função para lidar com a abertura e fechamento do grupo de links
   const handleGroupClick = useCallback(() => {
     if (!hasLinks) {
       setActive({ main: label, sub: "" });
@@ -50,49 +53,56 @@ export function MenuGroup({
     }
   }, [hasLinks, label, setActive]);
 
+  const handleClickMenu = useCallback(() => {
+	setActive((prevState) => {
+	  const labelMain = hasLinks ? prevState.main : label;
+	  const subActive = hasLinks && opened ? prevState.sub : "";
+
+	  return {
+		main: labelMain !== prevState.main ? labelMain : prevState.main,
+		sub: subActive !== prevState.sub ? subActive : prevState.sub,
+	  };
+	});
+  }, [hasLinks, label, opened, setActive]);
+
   return (
     <>
       <UnstyledButton
         onClick={handleGroupClick}
         className={classes.control}
-		data-open={!open.isOpen||undefined}
+		data-open={!isOpen||undefined}
         data-active={label === active.main || undefined}
         aria-expanded={opened}
       >
         <Group justify="space-between" gap={0}>
-          <a
-            className={classes.linkSingle}
-            href="#"
-            key={label}
-            data-active={label === active.main || undefined}
-			data-open={!open.isOpen||undefined}
-            onClick={(event) => {
-              event.preventDefault();
-              const subActive = hasLinks && opened ? links[0].label : "";
-              setActive({
-                main: label,
-                sub: subActive,
-              });
-            }}
-          >
-            <IconMapper
-              iconName={icon}
-              className={classes.linkIcon}
-              stroke={1.5}
-            />
-            <span>{open.isOpen && label}</span>
-          </a>
-          {hasLinks && open.isOpen && (
-            <IconChevronRight
-              className={classes.chevron}
-              stroke={1.5}
-              size={16}
-              style={{ transform: opened ? "rotate(-90deg)" : "none" }}
-            />
+			<Link
+				className={classes.linkSingle}
+				href={!hasLinks ?  links : '#'}
+				key={label}
+				data-active={label === active.main || undefined}
+				data-open={!isOpen||undefined}
+				onClick={handleClickMenu}
+			>
+				<IconMapper
+				iconName={icon}
+				className={classes.linkIcon}
+				stroke={1.5}
+				/>
+				<span>
+					{isOpen && label}
+				</span>
+			</Link>
+			{hasLinks && isOpen && (
+				<IconChevronRight
+				className={classes.chevron}
+				stroke={1.5}
+				size={16}
+				style={{ transform: opened ? "rotate(-90deg)" : "none" }}
+				/>
           )}
         </Group>
       </UnstyledButton>
-      {hasLinks && <Collapse in={opened && open.isOpen}>{items}</Collapse>}
+      {hasLinks && <Collapse in={opened && isOpen}>{items}</Collapse>}
     </>
   );
 }
