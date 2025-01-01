@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
-import { Collapse, Group, Text, UnstyledButton } from "@mantine/core";
+import { Collapse, Group, UnstyledButton } from "@mantine/core";
 import classes from "./MenuGroup.module.css";
 import IconMapper from "../IconMapper";
 import { MenuGroupProps } from "./interfaceMenu";
@@ -21,21 +21,21 @@ export function MenuGroup({
   // Itens de menu
   const items = useMemo(() => {
 	return (hasLinks ? links : []).map((link) => {
-	  return (
-		<Link
-		  href={link.link}
-		  key={link.label}
-		  data-active={active.sub === link.label || undefined}
-		  className={classes.link}
-		  passHref
-		  onClick={() => {
-			setActive({ main: label, sub: link.label });
-		  }}
+	 	return (
+			<Link
+			href={link.link}
+			key={link.label}
+			data-active={active.sub === link.label || undefined}
+			className={classes.link}
+			passHref
+			onClick={() => {
+				setActive({ main: label, sub: link.label });
+			}}
 
-		>
-			{isOpen ? link.label : ""}
-		</Link>
-	  );
+			>
+				{isOpen ? link.label : ""}
+			</Link>
+	  	);
 	});
   }, [hasLinks, links, active.sub, label, isOpen, setActive]);
 
@@ -47,6 +47,7 @@ export function MenuGroup({
 
   const handleGroupClick = useCallback(() => {
     if (!hasLinks) {
+
       setActive({ main: label, sub: "" });
     } else {
       setOpened((prevOpened) => !prevOpened);
@@ -73,15 +74,21 @@ export function MenuGroup({
 		data-open={!isOpen||undefined}
         data-active={label === active.main || undefined}
         aria-expanded={opened}
+
       >
         <Group justify="space-between" gap={0}>
 			<Link
 				className={classes.linkSingle}
-				href={!hasLinks ?  links : '#'}
+				href={!hasLinks ?  links : ''}
 				key={label}
 				data-active={label === active.main || undefined}
 				data-open={!isOpen||undefined}
-				onClick={handleClickMenu}
+				onClick={(e) =>{
+					if(hasLinks){
+						e.preventDefault();
+					}
+					handleClickMenu}}
+				passHref
 			>
 				<IconMapper
 				iconName={icon}

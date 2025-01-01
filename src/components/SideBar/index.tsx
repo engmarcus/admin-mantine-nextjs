@@ -2,84 +2,104 @@
 
 import classes from "./SideBar.module.css";
 import React, { useState } from "react";
-import { Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
-import { IconLogout } from "@tabler/icons-react";
+import useSidebarStore from "@/store/sidebarStore";
+import { ActionIcon,  Divider, Group, rem, ScrollArea, Switch, useMantineTheme } from "@mantine/core";
+import {  IconLogout, IconX } from "@tabler/icons-react";
 import { MenuItem } from "@/types/menu";
 import { MenuGroup } from "../MenuGroup";
-import { Logo } from "../Logo";
-import useSidebarStore from "@/store/sidebarStore";
 import { SideBarProps } from "./interface";
+import { useMediaQuery } from "@mantine/hooks";
+
+import { Logo } from "../Logo";
 
 export default function SideBar({ menus }: SideBarProps) {
-  const clickOpen = useSidebarStore((store) => store.clickOpen);
-  const isOpen = useSidebarStore((store) => store.isOpen);
-  const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
+	const clickOpen = useSidebarStore((store) => store.clickOpen);
+	const isOpen = useSidebarStore((store) => store.isOpen);
+	const breakPoint = useSidebarStore((store) => store.breakPoint);
+	const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
+	const { breakpoints } = useMantineTheme();
+  	const isMobile = useMediaQuery(
+		`(max-width: ${breakpoints[breakPoint] || breakpoints.xs})`
+	);
+	const [active, setActive] = useState({ main: "Dashboard", sub: "" });
 
-  const [active, setActive] = useState({ main: "Dashboard", sub: "" });
+	const handleOpenMenu = () =>{
+		toggleSidebar(isMobile ?? false);
+	}
 
-  const renderGroups = () => {
-	/** fazer filtro de permissao */
-	/** fazer filtro de menu ativo */
-    return menus.map((group) => {
-		/**  */
+	const renderGroups = () => {
+		/** fazer filtro de permissao */
+		/** fazer filtro de menu ativo */
+		return menus.map((group) => {
+			/**  */
 
-		return (
-			<div key={group.group} className={classes.groupMenu}>
-			<Divider
-				my="xs"
-				color="var(--mantine-color-blue-7)"
-				labelPosition={isOpen ? "center" : "left"}
-				label={<h3 className={classes.groupTitle}>{group.group}</h3>}
-			/>
-			{group.items.map((item: MenuItem) => {
-				return(
-					<MenuGroup
-						key={item.label}
-						label={item.label}
-						links={item.links}
-						icon={item.icon}
-						active={active}
-						setActive={setActive}
-					/>
+			return (
+				<div key={group.group} className={classes.groupMenu}>
+				<Divider
+					my="xs"
+					color="var(--mantine-color-blue-7)"
+					labelPosition={isOpen ? "center" : "left"}
+					label={<h3 className={classes.groupTitle}>{group.group}</h3>}
+				/>
+				{group.items.map((item: MenuItem) => {
+					return(
+						<MenuGroup
+							key={item.label}
+							label={item.label}
+							links={item.links}
+							icon={item.icon}
+							active={active}
+							setActive={setActive}
+						/>
+					)}
 				)}
-			)}
-			</div>
-      	);
-    });
-  };
+				</div>
+			);
+		});
+	};
 
-  return (
-    <nav className={classes.sideBarContainer}>
-      <div className={classes.sideBarInner}>
-        <Group className={classes.header} data-active={!isOpen || undefined} justify="space-between">
-          <div className={classes.logoWrapper}>
-            <Logo style={{ width: 120 }} open={isOpen} />
-          </div>
+	return (
+		<nav className={classes.sideBarContainer}>
+		<div className={classes.sideBarInner}>
+			<Group className={classes.header} data-active={!isOpen || undefined} justify="space-between">
+				<div className={classes.logoWrapper}>
+					<Logo style={{ width: 120 }} open={isOpen} />
+				</div>
 
-          <Switch
-            checked={clickOpen}
-            onChange={toggleSidebar}
-            styles={switchStyles({ isOpen, clickOpen })}
-            h={24}
-            radius="sm"
-          />
-        </Group>
+				<Switch
+					checked={clickOpen}
+					onChange={handleOpenMenu}
+					styles={switchStyles({ isOpen, clickOpen })}
+					h={24}
+					radius="sm"
+					visibleFrom={breakPoint}
+				/>
+				<ActionIcon
+					variant="default"
+					aria-label="toggle Menu"
+					hiddenFrom={breakPoint}
+					onClick={handleOpenMenu}
+				>
+					<IconX  style={{ width: '70%', height: '70%' }} stroke={1.5} />
+				</ActionIcon>
 
-        <ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
-          {renderGroups()}
-        </ScrollArea>
+			</Group>
 
-        <Group className={classes.footer}>
-          <FooterLink
-            href="#"
-            icon={<IconLogout className={classes.linkIcon} stroke={1.5} />}
-            label="Logout"
-            isOpen={isOpen}
-          />
-        </Group>
-      </div>
-    </nav>
-  );
+			<ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
+			{renderGroups()}
+			</ScrollArea>
+
+			<Group className={classes.footer}>
+			<FooterLink
+				href="#"
+				icon={<IconLogout className={classes.linkIcon} stroke={1.5} />}
+				label="Logout"
+				isOpen={isOpen}
+			/>
+			</Group>
+		</div>
+		</nav>
+	);
 }
 
 function FooterLink({ href, icon, label, isOpen }: { href: string; icon: React.ReactNode; label: string; isOpen: boolean }) {
