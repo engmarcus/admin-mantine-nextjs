@@ -37,7 +37,6 @@ export default function LayoutClient ({children, menus} : LayoutClientInterface)
 			<AppShell.Navbar className={classes.navbar}
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave}
-
 			>
 				<SideBar menus={menus} />
 			</AppShell.Navbar>

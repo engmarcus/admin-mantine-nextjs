@@ -10,12 +10,3 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 		</LayoutClient>
 	);
 }
-
-
-
-{/*<Structure
-			headerContent={<>teste</>}
-			menu={menu}
-		>
-			{ children}
-		</Structure>*/}
