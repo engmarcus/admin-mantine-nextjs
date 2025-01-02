@@ -15,7 +15,7 @@ interface SidebarState {
 }
 
 const useSidebarStore = create<SidebarState>((set) => ({
-	mobileOpen: true,
+	mobileOpen: false,
 	menus: null,
 	clickOpen: true,
 	isOpen: true,
