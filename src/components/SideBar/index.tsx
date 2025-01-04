@@ -3,25 +3,21 @@
 import classes from "./SideBar.module.css";
 import React, { useState } from "react";
 import useSidebarStore from "@/store/sidebarStore";
-import { ActionIcon,  Divider, Group, rem, ScrollArea, Switch, useMantineTheme } from "@mantine/core";
+import { ActionIcon,  Divider, Group, rem, ScrollArea, Switch } from "@mantine/core";
 import {  IconLogout, IconX } from "@tabler/icons-react";
 import { MenuItem } from "@/types/menu";
 import { MenuGroup } from "../MenuGroup";
 import { SideBarProps } from "./interface";
-import { useMediaQuery } from "@mantine/hooks";
 
 import { Logo } from "../Logo";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function SideBar({ menus }: SideBarProps) {
 	const clickOpen = useSidebarStore((store) => store.clickOpen);
 	const isOpen = useSidebarStore((store) => store.isOpen);
 	const breakPoint = useSidebarStore((store) => store.breakPoint);
 	const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
-	const { breakpoints } = useMantineTheme();
-
-  	const isMobile = useMediaQuery(
-		`(max-width: ${breakpoints[breakPoint]})`
-	);
+  	const isMobile = useIsMobile();
 
 	const [active, setActive] = useState({ main: "Dashboard", sub: "" });
 

@@ -12,11 +12,13 @@ export default function LayoutClient ({children, menus} : LayoutClientInterface)
 
 	const isOpen = useSidebarStore( store => store.isOpen);
 	const isOpenMobile = useSidebarStore( store => store.mobileOpen);
-
 	const breakPoint = useSidebarStore( store => store.breakPoint);
+
 	const handleMouseLeave = useSidebarStore(store =>store.handleMouseLeave);
 	const handleMouseEnter = useSidebarStore(store =>store.handleMouseEnter);
-
+	const mouseEvents = !isOpenMobile
+		? { onMouseEnter: handleMouseEnter, onMouseLeave: handleMouseLeave }
+		: {};
 	return (
 		<AppShell
 			header={{ height: 66 }}
@@ -35,8 +37,7 @@ export default function LayoutClient ({children, menus} : LayoutClientInterface)
 			</AppShell.Header>
 
 			<AppShell.Navbar className={classes.navbar}
-				onMouseEnter={handleMouseEnter}
-				onMouseLeave={handleMouseLeave}
+				{...mouseEvents}
 			>
 				<SideBar menus={menus} />
 			</AppShell.Navbar>

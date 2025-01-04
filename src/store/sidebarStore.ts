@@ -1,8 +1,6 @@
-import { MenuStructure } from '@/types/menu';
 import { create } from 'zustand';
 
 interface SidebarState {
-	menus: MenuStructure | null;
 	clickOpen: boolean;
 	isOpen: boolean;
 	mobileOpen: boolean;
@@ -11,12 +9,11 @@ interface SidebarState {
 	setOpen: (value: boolean) => void;
 	handleMouseEnter: () => void;
 	handleMouseLeave: () => void;
-	setMenus: (menus: MenuStructure) => void;
 }
+
 
 const useSidebarStore = create<SidebarState>((set) => ({
 	mobileOpen: false,
-	menus: null,
 	clickOpen: true,
 	isOpen: true,
 	breakPoint: "xs",
@@ -52,8 +49,6 @@ const useSidebarStore = create<SidebarState>((set) => ({
 		}
 		return {};
 	}),
-	setMenus: (menus) => set({ menus }),
 }));
-
 
 export default useSidebarStore;

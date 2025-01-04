@@ -1,9 +1,9 @@
 'use client'
 
 import useSidebarStore from "@/store/sidebarStore";
-import { ActionIcon, useMantineTheme } from "@mantine/core"
+import { ActionIcon, rem, useMantineTheme } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks";
-import { IconX } from "@tabler/icons-react"
+import { IconMenu2 } from "@tabler/icons-react"
 
 export default function MobileMenuButton(){
 	const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
@@ -17,11 +17,11 @@ export default function MobileMenuButton(){
 		toggleSidebar(isMobile ?? false);
 	}
 	return <ActionIcon
-		variant="default"
+		variant="transparent"
 		aria-label="toggle Menu"
 		hiddenFrom={breakPoint}
 		onClick={handleOpenMenu}
 	>
-		<IconX  style={{ width: '70%', height: '70%' }} stroke={1.5} />
+		<IconMenu2   color="#000" style={{ width: rem(25), height: rem(25) }} stroke={1.5} />
 	</ActionIcon>
 }

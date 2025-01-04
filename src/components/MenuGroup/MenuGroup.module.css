@@ -6,7 +6,6 @@
 	color: var(--mantine-color-white);
 	margin: 5px;
 	border-radius: var(--mantine-radius-sm);
-	max-width:  15rem;
 	@mixin hover {
 		background-color: var(--mantine-color-blue-7);
 		color: var(--mantine-color-dark-4);
