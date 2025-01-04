@@ -101,27 +101,28 @@ export function MenuGroup({
 		href={!hasLinks ?  links : ''}
 
       >
-        <Group justify="space-between" gap={0}>
+        <Group justify="space-between"  w='100%' mr='10px' >
 			<div
 				data-active={label === active.main || undefined}
 				data-open={!isOpen||undefined}
 				className={classes.linkSingle}
 			>
 				<IconMapper
-				iconName={icon}
-				className={classes.linkIcon}
-				stroke={1.5}
+					iconName={icon}
+					className={classes.linkIcon}
+					stroke={1.5}
 				/>
+
 				<span>
 					{isOpen && label}
 				</span>
 			</div>
 			{hasLinks && isOpen && (
 				<IconChevronRight
-				className={classes.chevron}
-				stroke={1.5}
-				size={16}
-				style={{ transform: opened ? "rotate(-90deg)" : "none" }}
+					className={classes.chevron}
+					stroke={1.5}
+					size={16}
+					style={{ transform: opened ? "rotate(-90deg)" : "none" }}
 				/>
           )}
         </Group>

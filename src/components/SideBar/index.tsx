@@ -32,29 +32,31 @@ export default function SideBar({ menus }: SideBarProps) {
 	const renderGroups = () => {
 		/** fazer filtro de permissao */
 		/** fazer filtro de menu ativo */
-		return menus.map((group) => {
+		return menus.map((group, index) => {
 			/**  */
+			const lastGroup =  menus.length === (index+1)
 
 			return (
-				<div key={group.group} className={classes.groupMenu}>
-				<Divider
-					my="xs"
-					color="var(--mantine-color-blue-7)"
-					labelPosition={isOpen ? "center" : "left"}
-					label={<h3 className={classes.groupTitle}>{group.group}</h3>}
-				/>
-				{group.items.map((item: MenuItem) => {
-					return(
-						<MenuGroup
-							key={item.label}
-							label={item.label}
-							links={item.links}
-							icon={item.icon}
-							active={active}
-							setActive={setActive}
-						/>
+				<div key={group.group} className={classes.groupMenu} data-last-item={lastGroup || undefined}>
+					<Divider
+						my="xs"
+						color="var(--mantine-color-blue-7)"
+						labelPosition={isOpen ? "center" : "left"}
+						label={<h3 className={classes.groupTitle}>{group.group}</h3>}
+					/>
+					{group.items.map((item: MenuItem ) => {
+						return(
+							<MenuGroup
+								key={item.label}
+								label={item.label}
+								links={item.links}
+								icon={item.icon}
+								active={active}
+								setActive={setActive}
+							/>
+
+						)}
 					)}
-				)}
 				</div>
 			);
 		});
@@ -62,44 +64,44 @@ export default function SideBar({ menus }: SideBarProps) {
 
 	return (
 		<nav className={classes.sideBarContainer}>
-		<div className={classes.sideBarInner}>
-			<Group className={classes.header} data-active={!isOpen || undefined} justify="space-between">
-				<div className={classes.logoWrapper}>
-					<Logo style={{ width: 120 }} open={isOpen} />
-				</div>
+			<div className={classes.sideBarInner}>
+				<Group className={classes.header} data-active={!isOpen || undefined} justify="space-between">
+					<div className={classes.logoWrapper}>
+						<Logo style={{ width: 120 }} open={isOpen} />
+					</div>
 
-				<Switch
-					checked={clickOpen}
-					onChange={handleOpenMenu}
-					styles={switchStyles({ isOpen, clickOpen })}
-					h={24}
-					radius="sm"
-					visibleFrom={breakPoint}
-				/>
-				<ActionIcon
-					variant="default"
-					aria-label="toggle Menu"
-					hiddenFrom={breakPoint}
-					onClick={handleOpenMenu}
-				>
-					<IconX  style={{ width: '70%', height: '70%' }} stroke={1.5} />
-				</ActionIcon>
+					<Switch
+						checked={clickOpen}
+						onChange={handleOpenMenu}
+						styles={switchStyles({ isOpen, clickOpen })}
+						h={24}
+						radius="sm"
+						visibleFrom={breakPoint}
+					/>
+					<ActionIcon
+						variant="default"
+						aria-label="toggle Menu"
+						hiddenFrom={breakPoint}
+						onClick={handleOpenMenu}
+					>
+						<IconX  style={{ width: '70%', height: '70%' }} stroke={1.5} />
+					</ActionIcon>
 
-			</Group>
+				</Group>
 
-			<ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
-				{renderGroups()}
-			</ScrollArea>
+				<ScrollArea type="never" scrollbars="y" className={classes.scrollbarsNav}>
+					{renderGroups()}
+				</ScrollArea>
 
-			<Group className={classes.footer}>
-			<FooterLink
-				href="#"
-				icon={<IconLogout className={classes.linkIcon} stroke={1.5} />}
-				label="Logout"
-				isOpen={isOpen}
-			/>
-			</Group>
-		</div>
+				<Group className={classes.footer}>
+					<FooterLink
+						href="#"
+						icon={<IconLogout className={classes.linkIcon} stroke={1.5} />}
+						label="Logout"
+						isOpen={isOpen}
+					/>
+				</Group>
+			</div>
 		</nav>
 	);
 }

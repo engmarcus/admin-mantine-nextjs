@@ -15,7 +15,6 @@
 	margin-right: calc(var(--mantine-spacing-md) * -1);
 	padding-bottom: 10px;
 	color: light-dark(var(--mantine-color-white), var(--mantine-color-black) );
-	border-bottom: 1px solid var(--mantine-color-hinodeBlue-3);
 	&[data-active]{
 		justify-content: center;
    }
@@ -31,6 +30,9 @@
 }
 .groupMenu {
 	position: relative;
+	&[data-last-item]{
+		padding-bottom: 1.5em;
+	}
 }
 .link {
 	display: flex;
@@ -46,15 +48,17 @@
 .link:hover {
 	color: var(--mantine-color-hinodeBlue-3);
 }
+
 .linkIcon{
 	color: var(--mantine-color-blue-1);
 	margin-right: var(--mantine-spacing-sm);
 	width: 25px;
 	height: 25px;
 }
+
 .footer {
-	flex-shrink: 0;
 	display: flex;
-	padding-top: var(--mantine-spacing-md);
+	padding-top: .5em;
+	padding-bottom: 1em;
 	border-top: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }

@@ -6,15 +6,15 @@
 	color: var(--mantine-color-white);
 	margin: 5px;
 	border-radius: var(--mantine-radius-sm);
-	min-width: 12rem;
+	max-width:  15rem;
 	@mixin hover {
 		background-color: var(--mantine-color-blue-7);
 		color: var(--mantine-color-dark-4);
 		font-weight: 500;
 		.linkIcon {
 			color: var(--mantine-color-white);
-	   }
-   }
+		}
+	}
 	&[data-active] {
 		&, &:hover {
 			font-weight: 500;
@@ -35,13 +35,13 @@
     }
 	&[data-open] {
 		margin: 0;
-		min-width: 0;
-   }
+		max-width: 4em;
+    }
+
 }
 
 .link {
 	position: relative;
-   /* Necessário para posicionamento do ::before */
 	font-weight: 500;
 	display: block;
 	text-decoration: none;
@@ -102,7 +102,8 @@
 	   }
    }
    &[data-open] {
-		margin-left: 10%;
+		justify-content: center;
+		margin-left: .4em;
    }
 }
 .linkIcon{
