@@ -18,9 +18,11 @@ export default function SideBar({ menus }: SideBarProps) {
 	const breakPoint = useSidebarStore((store) => store.breakPoint);
 	const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
 	const { breakpoints } = useMantineTheme();
+
   	const isMobile = useMediaQuery(
-		`(max-width: ${breakpoints[breakPoint] || breakpoints.xs})`
+		`(max-width: ${breakpoints[breakPoint]})`
 	);
+
 	const [active, setActive] = useState({ main: "Dashboard", sub: "" });
 
 	const handleOpenMenu = () =>{

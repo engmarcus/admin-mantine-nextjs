@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { IconChevronRight } from "@tabler/icons-react";
-import { Collapse, Group } from "@mantine/core";
+import { Collapse, Group, useMantineTheme } from "@mantine/core";
 import classes from "./MenuGroup.module.css";
 import IconMapper from "../IconMapper";
 import { MenuGroupProps } from "./interfaceMenu";
 import useSidebarStore from "@/store/sidebarStore";
 import Link from "next/link";
+import { useMediaQuery } from "@mantine/hooks";
 
 export function MenuGroup({
   icon,
@@ -18,6 +19,13 @@ export function MenuGroup({
   	const hasLinks = Array.isArray(links);
   	const [opened, setOpened] = useState(initiallyOpened || false);
 	const isOpen = useSidebarStore(store => store.isOpen);
+	const toggleSidebar = useSidebarStore((store) => store.toggleSidebar);
+	const { breakpoints } = useMantineTheme();
+	const breakPoint = useSidebarStore((store) => store.breakPoint);
+
+	const isMobile = useMediaQuery(
+		`(max-width: ${breakpoints[breakPoint]})`
+	);
   // Itens de menu
   const items = useMemo(() => {
 	return (hasLinks ? links : []).map((link) => {
@@ -29,6 +37,9 @@ export function MenuGroup({
 				className={classes.link}
 				passHref
 				onClick={() => {
+					if(isMobile) {
+						toggleSidebar(true);
+					}
 					setActive({ main: label, sub: link.label });
 				}}
 
@@ -55,6 +66,7 @@ export function MenuGroup({
 
   const handleClickMenu = useCallback(() => {
 	handleGroupClick();
+
 	setActive((prevState) => {
 	  const labelMain = hasLinks ? prevState.main : label;
 	  const subActive = hasLinks && opened ? prevState.sub : "";
@@ -66,16 +78,22 @@ export function MenuGroup({
 	});
   }, [hasLinks, label, opened, setActive]);
 
+  	const handleMenuClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		if (hasLinks) {
+			e.preventDefault();
+		}
+
+		if (isMobile && !hasLinks) {
+			toggleSidebar(true);
+		}
+
+		handleClickMenu();
+  	};
+
   return (
     <>
       <Link
-		onClick={(e) =>{
-			if(hasLinks){
-				e.preventDefault();
-			}
-			handleClickMenu();
-		}}
-
+		onClick={handleMenuClick}
         className={classes.control}
 		data-open={!isOpen||undefined}
         data-active={label === active.main || undefined}

@@ -28,11 +28,11 @@
 				color: var(--mantine-color-hinodeBlue-5);
 		   }
 	   }
-   }
+    }
 	&:hover .chevron {
 		font-weight: 500;
 		color: var(--mantine-color-white);
-   }
+    }
 	&[data-open] {
 		margin: 0;
 		min-width: 0;
@@ -61,7 +61,7 @@
 .link::before {
 	content: '';
 	position: absolute;
-	left: -10%;
+	left: -1.5em;
 	top: 50%;
 	transform: translateY(-50%);
 	width: 8px;
