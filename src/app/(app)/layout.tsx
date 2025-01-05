@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import LayoutClient from "./layoutClient";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -5,7 +6,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 	const menus = await res.json();
 
 	return (
-		<LayoutClient menus={menus}>
+		<LayoutClient
+			header={<Header />}
+			menus={menus}
+		>
 			{children}
 		</LayoutClient>
 	);
