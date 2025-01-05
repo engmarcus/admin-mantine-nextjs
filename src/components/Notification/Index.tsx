@@ -87,7 +87,7 @@ const NOTIFICATIONS = [
 ];
 
 
-export default function Notifications() {
+export default function NotificationIcon() {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
 

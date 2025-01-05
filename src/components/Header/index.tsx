@@ -1,13 +1,11 @@
-import classes from './header.module.css';
 
 import {
 	Container,
 	Group
 } from "@mantine/core";
 
-import MobileMenuButton from "../MobileMenuButton";
-import Notifications from '../Notification/Index';
-
+import MobileMenuButton from "@/components/MobileMenuButton";
+import NotificationIcon from "@/components/Notification";
 
 const Header = () => {
 
@@ -19,15 +17,7 @@ const Header = () => {
 				</Group>
 				<Group>
 					Default Header Content
-					<Notifications />
-
-
-
-
-
-
-
-
+					<NotificationIcon />
 				</Group>
 
 			</Group>

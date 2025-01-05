@@ -2,7 +2,7 @@
 
 import useSidebarStore from '@/store/sidebarStore';
 import classes from './app.module.css';
-import { AppShell, Box, rem, useMantineTheme } from "@mantine/core"
+import { AppShell, rem, useMantineTheme } from "@mantine/core"
 import SideBar from '@/components/SideBar';
 import { LayoutClientInterface } from './Interfaces/app';
 import AppMain from '@/components/AppMain';
